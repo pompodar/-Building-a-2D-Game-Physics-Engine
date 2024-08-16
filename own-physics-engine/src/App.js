@@ -8,7 +8,7 @@ const RandomDivs = () => {
       const newDivs = Array.from({ length: 3 }).map(() => ({
         id: Date.now() + Math.random(),  // Unique ID for each div
         left: `${Math.random() * 100}%`,
-        top: `-${Math.random() * 100 + 50}px`,  // Random start above the screen with extra space
+        top: `${Math.random() * 100 + 50}px`,  // Random start above the screen with extra space
         opacity: Math.random().toFixed(1),
       }));
 
@@ -32,7 +32,7 @@ const RandomDivs = () => {
     // Remove all animations and set the final position and rotation
     element.style.animation = 'none';
     element.style.transform = transformValue; // Apply the final rotation
-    element.style.top = 'calc(100vh - 50px)'; // Set the position at the bottom
+    element.style.top = `calc(100vh - 20px - ${Math.random() * 30}px)`; // Set the position at the bottom with random offset
   };
 
   return (
