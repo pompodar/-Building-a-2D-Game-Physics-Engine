@@ -7,4 +7,5 @@ function RigidShape(center) {
 RigidShape.prototype.update = function () {
     if (this.mCenter.y < gEngine.Core.mHeight && this.mFix !== 0) 
         this.move(new Vec2(0, 1));
+        this.rotate(0.1);
 };
