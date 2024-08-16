@@ -4,14 +4,14 @@ var Vec2 = function (x, y) {
 };
 
 Vec2.prototype.length = function () {
-    return Math.sqrt(this.x * this.x + this.y * this.y);
+    return Math.sqrt(this.x * this.x + this.y * this.y); // SV - that's probly to calculate an object aquare
 };
     
 Vec2.prototype.add = function (vec) {
-    return new Vec2(vec.x + this.x, vec.y + this.y);
+    return new Vec2(vec.x + this.x, vec.y + this.y); // that's  when objects move down
 };
 
-Vec2.prototype.subtract = function (vec) {
+Vec2.prototype.subtract = function (vec) { // that's  when objects move up
     return new Vec2(this.x - vec.x, this.y - vec.y);
 };
 
@@ -47,7 +47,7 @@ Vec2.prototype.normalize = function () {
     return new Vec2(this.x * len, this.y * len);
 };
 
-Vec2.prototype.distance = function (vec) {
+Vec2.prototype.distance = function (vec) { // this probably calculates the distance between ywo objects
     var x = this.x - vec.x;
     var y = this.y - vec.y;
     return Math.sqrt(x * x + y * y);
