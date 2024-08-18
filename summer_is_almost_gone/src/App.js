@@ -76,54 +76,52 @@ const App = () => {
   };
 
   return (
-    <div style={{ overflow: 'hidden', position: 'relative', width: '100vw', height: '100vh', background: 'linear-gradient(45deg, #40BDFF, #63FFA4, #FFE150)' }}>
+    <div 
+    className="overflow-hidden relative w-screen h-screen"
+    style={{ background: 'linear-gradient(45deg, #40BDFF, #63FFA4, #FFE150)' }}>
       {trees.map((tree) => (
         <div
           key={tree.id}
-          className="tree w-24 h-full"
+          className="tree absolute top-0 w-24 h-full"
           style={{
-            position: 'absolute',
             left: tree.left,
-            top: 0,
             opacity: tree.opacity,
           }}
         >
           <div
-            className="top"
+            className="top absolute rounded-lg z-10"
             style={{
-              position: 'absolute',
               top: '-5%',
               bottom: '70%',
               width: '320%',
               backgroundColor: 'brown',
               boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.75)',
-              borderRadius: '8px',
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
               left: '-110%',
-              zIndex: 20,
               animation: `wind 4s ease-in-out infinite`,
               animationDelay: `${Math.random() * 2}s`,   
               transformOrigin: 'center bottom',
             }}
           ></div>
           <div
-            className="trunk h-full"
+            className="trunk relative h-full"
             style={{
-              position: 'relative',
               backgroundColor: 'brown',
               boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.75)',
             }}
           >
             <div 
             style={{
-              position: 'relative',
               backgroundColor: 'brown',
               boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.75)',
               rotate: '45deg',
+              right: '-136%',
+              top: '20%',
+              zIndex: -1,
             }}
 
-            className="branch absolute w-6 h-36 right-[-136%] top-[20%] z-[-1]" />
+            className="branch relative w-6 h-36" />
           </div>
         </div>
       ))}
@@ -143,15 +141,13 @@ const App = () => {
           <div className="h-full overflow-hidden">
               <div
                 key={leaf.id}
-                className="leaf"
+                className="leaf absolute bg-red-600"
                 style={{
-                  position: 'absolute',
                   left: leaf.left,
                   top: leaf.top,
                   width: (leaf.widthAndHeight + 20) + 'px',
                   height: (leaf.widthAndHeight + 20) + 'px',
                   boxShadow: '10px 10px 5px 0px rgba(0,0,0,0.75)',
-                  backgroundColor: 'red',
                   opacity: leaf.opacity,
                   animation: `rotate 8s linear infinite, ${animationName} ${leaf.animationLength} linear forwards`,
                   zIndex: leaf.zIndex,
