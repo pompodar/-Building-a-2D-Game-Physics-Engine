@@ -5,7 +5,8 @@ var Rectangle = function (center, width, height, fix) {
     this.mHeight = height;
     this.mVertex = [];
     this.mFaceNormal = [];
-    this.mFix = fix;
+    this.mBoundRadius = Math.sqrt(width*width + height*height)/2;
+    // this.mFix = fix;
 
     // 0--TopLeft; 1--TopRight; 2--BottomRight; 3--BottomLeft
     this.mVertex[0] = new Vec2(center.x - width / 2, center.y - height / 2);
@@ -17,14 +18,14 @@ var Rectangle = function (center, width, height, fix) {
     // mFaceNormal is normal of face toward outside of rectangle
     // SV - The face normal vectors will be used later for determining collisions.
 
-    // this.mFaceNormal[0] = this.mVertex[1].subtract(this.mVertex[2]);
-    // this.mFaceNormal[0] = this.mFaceNormal[0].normalize();
-    // this.mFaceNormal[1] = this.mVertex[2].subtract(this.mVertex[3]);
-    // this.mFaceNormal[1] = this.mFaceNormal[1].normalize();
-    // this.mFaceNormal[2] = this.mVertex[3].subtract(this.mVertex[0]);
-    // this.mFaceNormal[2] = this.mFaceNormal[2].normalize();
-    // this.mFaceNormal[3] = this.mVertex[0].subtract(this.mVertex[1]);
-    // this.mFaceNormal[3] = this.mFaceNormal[3].normalize();
+    this.mFaceNormal[0] = this.mVertex[1].subtract(this.mVertex[2]);
+    this.mFaceNormal[0] = this.mFaceNormal[0].normalize();
+    this.mFaceNormal[1] = this.mVertex[2].subtract(this.mVertex[3]);
+    this.mFaceNormal[1] = this.mFaceNormal[1].normalize();
+    this.mFaceNormal[2] = this.mVertex[3].subtract(this.mVertex[0]);
+    this.mFaceNormal[2] = this.mFaceNormal[2].normalize();
+    this.mFaceNormal[3] = this.mVertex[0].subtract(this.mVertex[1]);
+    this.mFaceNormal[3] = this.mFaceNormal[3].normalize();
 
 };
 
@@ -32,7 +33,7 @@ var prototype = Object.create(RigidShape.prototype);
 prototype.constructor = Rectangle;
 Rectangle.prototype = prototype;
 
-Rectangle.prototype.draw = function (context) {
+Rectangle.prototype.draw = function (context) {    
     context.save();
     context.translate(this.mVertex[0].x, this.mVertex[0].y); // SV - how an object falls by default
     context.rotate(this.mAngle);

@@ -9,7 +9,9 @@ class Rectangle extends RigidShape {
     this.mWidth = width;
     this.mHeight = height;
     this.mVertex = [];
-    this.mFix = fix;
+    this.mBoundRadius = Math.sqrt(width*width + height*height)/2;
+
+    //this.mFix = fix;
 
     this.mVertex[0] = new Vec2(center.x - width / 2, center.y - height / 2);
     this.mVertex[1] = new Vec2(center.x + width / 2, center.y - height / 2);

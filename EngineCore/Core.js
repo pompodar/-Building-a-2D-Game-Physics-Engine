@@ -17,12 +17,12 @@ gEngine.Core = (function () {
     var kMPF = 1000 * kFrameTime; // Milliseconds per frame.
 
     var updateUIEcho = function () {
-        // document.getElementById("uiEchoString").innerHTML = // ... identical to previous project    
-        // mAllObjects[gObjectNum].mCenter.y.toPrecision(3) + "</li>" + "<li>Angle: " + mAllObjects[gObjectNum].mAngle.toPrecision(3) + "</li>"  +
-        // "</ul> <hr>" + "<p><b>Control</b>: of selected object</p>" + "<ul style=\"margin:-10px\">" + "<li><b>Num</b> or <b>Up/Down Arrow</b>: SelectObject</li>" + "<li><b>WASD</b> + <b>QE</b>: Position [Move + Rotate]</li>" +
-        // "</ul> <hr>" + "<b>F/G</b>: Spawn [Rectangle/Circle] at selected object" + "<p><b>H</b>: Fix object</p>" +
-        // "<p><b>R</b>: Reset System</p>" +
-        // "<hr>";
+        document.getElementById("uiEchoString").innerHTML = // ... identical to previous project    
+        mAllObjects[gObjectNum].mCenter.y.toPrecision(3) + "</li>" + "<li>Angle: " + mAllObjects[gObjectNum].mAngle.toPrecision(3) + "</li>"  +
+        "</ul> <hr>" + "<p><b>Control</b>: of selected object</p>" + "<ul style=\"margin:-10px\">" + "<li><b>Num</b> or <b>Up/Down Arrow</b>: SelectObject</li>" + "<li><b>WASD</b> + <b>QE</b>: Position [Move + Rotate]</li>" +
+        "</ul> <hr>" + "<b>F/G</b>: Spawn [Rectangle/Circle] at selected object" +
+        "<p><b>R</b>: Reset System</p>" +
+        "<hr>";
     };
 
     var update = function () {
@@ -37,6 +37,9 @@ gEngine.Core = (function () {
         mContext.clearRect(0, 0, mWidth, mHeight);
         var i; for (i = 0; i < mAllObjects.length; i++) {
         mContext.strokeStyle = 'blue';
+
+        console.log("draw");
+        
         
         if (i === gObjectNum)
             mContext.strokeStyle = 'red';
@@ -58,15 +61,15 @@ gEngine.Core = (function () {
         //If lag larger then update frames, update until caught up.    
         while (mLagTime >= kMPF) {
             mLagTime -= kMPF;
+            draw();
+            gEngine.Physics.collision();
             update();
         }
-        //updateUIEcho();
-        draw();
+
+        updateUIEcho();
     };
 
-    var initializeEngineCore = function () {
-        console.log("Loop started");
-        
+    var initializeEngineCore = function () {        
         runGameLoop();
     };
 

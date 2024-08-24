@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Vec2 from './Vec2';
 import Rectangle from './Rectangle';
 import Circle from './Circle';
@@ -7,6 +7,7 @@ const App = () => {
   const canvasRef = useRef(null);
   const allObjectsRef = useRef([]);
   const gObjectNumRef = useRef(0);
+  const [mainContext, setMaincontext] = useState();
 
   const updateGameObjects = () => {
     const canvas = canvasRef.current;
@@ -16,10 +17,22 @@ const App = () => {
 
     context.clearRect(0, 0, width, height);
 
+    setMaincontext(context);
+
     allObjectsRef.current.forEach(obj => {
       obj.update(canvas);
       obj.draw(context);
     });
+
+    for (let i = 0; i < allObjectsRef.current.length; i++) {
+      for (let j = i + 1; j < allObjectsRef.current.length; j++) {
+        if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {          
+          context.strokeStyle = 'green';
+          allObjectsRef.current[i].draw(context);
+          allObjectsRef.current[j].draw(context);
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -39,21 +52,21 @@ const App = () => {
     runGameLoop();
 
     // Add new rectangles at random positions every 5 seconds
-    const intervalId = setInterval(() => {
-      const canvas = canvasRef.current;
-      const width = canvas.width;
-      const height = canvas.height;
+    // const intervalId = setInterval(() => {
+    //   const canvas = canvasRef.current;
+    //   const width = canvas.width;
+    //   const height = canvas.height;
 
-      const randomX = Math.random() * width;
-      const randomY = Math.random() * height;
+    //   const randomX = Math.random() * width;
+    //   const randomY = Math.random() * height;
 
-      let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, false);
-      allObjectsRef.current = [...allObjectsRef.current, r1];
-    }, 5000);
+    //   let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, false);
+    //   allObjectsRef.current = [...allObjectsRef.current, r1];
+    // }, 5000);
 
-    return () => {
-      clearInterval(intervalId);  // Clean up the interval on component unmount
-    };
+    // return () => {
+    //   clearInterval(intervalId);  // Clean up the interval on component unmount
+    // };
   }, []);
 
   const handleKeyDown = useCallback((event) => {
