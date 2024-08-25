@@ -132,8 +132,8 @@ const App = () => {
       const randomX = Math.random() * width;
       const randomY = Math.random() * height;
 
-      let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40);
-      allObjectsRef.current = [...allObjectsRef.current, r1];
+      //let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40);
+      //allObjectsRef.current = [...allObjectsRef.current, r1];
     }, 5000);
 
     return () => {

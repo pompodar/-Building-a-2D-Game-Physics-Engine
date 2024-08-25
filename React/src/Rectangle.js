@@ -38,6 +38,7 @@ class Rectangle extends RigidShape {
     this.mVertex = this.mVertex.map((vertex) => vertex.add(v));
     this.update(); // Update div position after moving
   }
+  
 
   rotate(angle) {
     super.rotate(angle);
