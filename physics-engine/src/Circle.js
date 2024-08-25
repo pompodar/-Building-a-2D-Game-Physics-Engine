@@ -1,6 +1,5 @@
 // Circle.js
 import RigidShape from './RigidShape';
-import Vec2 from './Vec2';
 
 class Circle extends RigidShape {
   constructor(center, radius) {

@@ -1,9 +1,11 @@
-import React, { useEffect, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 import Vec2 from './Vec2';
 import Rectangle from './Rectangle';
 import Circle from './Circle';
 
 const KeyHandler = ({ allObjectsRef, gObjectNumRef }) => {
+  const GRAVITY = new Vec2(0, 10);
+
   const handleKeyDown = useCallback(
     (event) => {
       const keycode = event.keyCode || event.which;
@@ -57,7 +59,7 @@ const KeyHandler = ({ allObjectsRef, gObjectNumRef }) => {
       }
 
       if (keycode === 83) { // S
-        allObjects[gObjectNum].move(new Vec2(0, 10));
+        allObjects[gObjectNum].move(GRAVITY);
       }
 
       if (keycode === 65) { // A

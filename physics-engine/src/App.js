@@ -9,8 +9,6 @@ const App = () => {
   const allObjectsRef = useRef([]);
   const gObjectNumRef = useRef(0);
 
-  const GRAVITY = new Vec2(0, 10);
-  const movement = true;
   const positionalCorrectionFlag = true;
   const relaxationCount = 15;
   const mPosCorrectionRate = 0.8;

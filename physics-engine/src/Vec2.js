@@ -1,4 +1,3 @@
-// Vec2.js
 class Vec2 {
     constructor(x, y) {
       this.x = x;
