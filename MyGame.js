@@ -10,10 +10,10 @@ function MyGame() {
     var r3 = new Rectangle(new Vec2(80, 80), 20, 20, 1, 1, 0);
 
     var r5 = new Rectangle(new Vec2(500, 200), 400, 20, 0, 0.3, 0);
-r5.rotate(2.8);
-var r6 = new Rectangle(new Vec2(200, 400), 400, 20, 0, 1, 0.5);
-var r7 = new Rectangle(new Vec2(100, 200), 200, 20, 0);
-var r8 = new Rectangle(new Vec2(10, 360), 20, 100, 0, 0, 1);
+    r5.rotate(2.8);
+    var r6 = new Rectangle(new Vec2(200, 400), 400, 20, 0, 1, 0.5);
+    var r7 = new Rectangle(new Vec2(100, 200), 200, 20, 0);
+    var r8 = new Rectangle(new Vec2(10, 360), 20, 100, 0, 0, 1);
 
 
     // var up = new Rectangle(new Vec2(200, 200), 40, 40, false);
