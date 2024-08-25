@@ -6,7 +6,7 @@ import CollisionInfo from './CollisionInfo';
 
 const App = () => {
   let mGravity = new Vec2(0, 10);
-  let mMovement = false;
+  let mMovement = true;
 
   var mPositionalCorrectionFlag = true;
  // number of relaxation iteration
@@ -179,7 +179,10 @@ const App = () => {
         Math.random() * 30 + 10,
         Math.random() * 30 + 10
       );
-      allObjectsRef.current = [...allObjects, r1];
+      var r5 = new Rectangle(new Vec2(500, 200), 400, 20, 0, 0.3, 0);
+    r5.rotate(2.8);
+    var r6 = new Rectangle(new Vec2(200, 400), 400, 20, 20, 1, 0.5);
+      allObjectsRef.current = [...allObjects, r1, r5, r6];
     }
 
     if (keycode === 71) { // G
