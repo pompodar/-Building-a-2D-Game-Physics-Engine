@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Vec2 from './Vec2';
 import Rectangle from './Rectangle';
 import Circle from './Circle';
+import CollisionInfo from './CollisionInfo';
 
 const App = () => {
   const canvasRef = useRef(null);
@@ -24,12 +25,40 @@ const App = () => {
       obj.draw(context);
     });
 
+    var collisionInfo = new CollisionInfo();
+
+    // Функція для малювання інформації про зіткнення
+    var drawCollisionInfo = function (collisionInfo, context) {        
+      context.beginPath();
+      context.moveTo(collisionInfo.mStart.x, collisionInfo.mStart.y);
+      context.lineTo(collisionInfo.mEnd.x, collisionInfo.mEnd.y);
+      context.closePath();
+      context.strokeStyle = "green";
+      context.stroke();
+    };
+
     for (let i = 0; i < allObjectsRef.current.length; i++) {
       for (let j = i + 1; j < allObjectsRef.current.length; j++) {
-        if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {          
-          context.strokeStyle = 'green';
-          allObjectsRef.current[i].draw(context);
-          allObjectsRef.current[j].draw(context);
+        // if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {  
+                  
+        //   context.strokeStyle = 'green';
+        //   allObjectsRef.current[i].draw(context);
+        //   allObjectsRef.current[j].draw(context);
+        // } else {
+        //   context.strokeStyle = 'blue';
+        // }
+
+        if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {  
+          if (allObjectsRef.current[i].collisionTest(allObjectsRef.current[j], collisionInfo)) {               
+            // Перевірка та зміна напряму нормалі
+            if (collisionInfo.getNormal().dot(allObjectsRef.current[j].mCenter.subtract(allObjectsRef.current[i].mCenter)) < 0) {
+                collisionInfo.changeDir();
+
+            }
+            
+            // Малювання інформації про зіткнення
+            drawCollisionInfo(collisionInfo, context);
+          }
         }
       }
     }
@@ -52,21 +81,21 @@ const App = () => {
     runGameLoop();
 
     // Add new rectangles at random positions every 5 seconds
-    // const intervalId = setInterval(() => {
-    //   const canvas = canvasRef.current;
-    //   const width = canvas.width;
-    //   const height = canvas.height;
+    const intervalId = setInterval(() => {
+      const canvas = canvasRef.current;
+      const width = canvas.width;
+      const height = canvas.height;
 
-    //   const randomX = Math.random() * width;
-    //   const randomY = Math.random() * height;
+      const randomX = Math.random() * width;
+      const randomY = Math.random() * height;
 
-    //   let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, false);
-    //   allObjectsRef.current = [...allObjectsRef.current, r1];
-    // }, 5000);
+      //let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, false);
+      //allObjectsRef.current = [...allObjectsRef.current, r1];
+    }, 500);
 
-    // return () => {
-    //   clearInterval(intervalId);  // Clean up the interval on component unmount
-    // };
+    return () => {
+      clearInterval(intervalId);  // Clean up the interval on component unmount
+    };
   }, []);
 
   const handleKeyDown = useCallback((event) => {

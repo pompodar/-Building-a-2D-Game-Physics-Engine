@@ -1,5 +1,6 @@
-var Rectangle = function (center, width, height, fix) {
+var Rectangle = function (center, width, height, fix) {    
     RigidShape.call(this, center);
+    this.center = center;
     this.mType = "Rectangle";
     this.mWidth = width;
     this.mHeight = height;
@@ -42,9 +43,7 @@ Rectangle.prototype.draw = function (context) {
 
 };
 
-Rectangle.prototype.move = function (v) {
-    console.log("Rectangle move");
-    
+Rectangle.prototype.move = function (v) {    
     var i; 
     for (i = 0; i < this.mVertex.length; i++) {
         this.mVertex[i] = this.mVertex[i].add(v);

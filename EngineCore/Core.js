@@ -26,9 +26,7 @@ gEngine.Core = (function () {
     };
 
     var update = function () {
-        var i; for (i = 0; i < mAllObjects.length; i++) {
-            console.log(mAllObjects.length);
-            
+        var i; for (i = 0; i < mAllObjects.length; i++) {            
             mAllObjects[i].update(mContext);
         }
     };
@@ -37,8 +35,6 @@ gEngine.Core = (function () {
         mContext.clearRect(0, 0, mWidth, mHeight);
         var i; for (i = 0; i < mAllObjects.length; i++) {
         mContext.strokeStyle = 'blue';
-
-        console.log("draw");
         
         
         if (i === gObjectNum)
@@ -80,8 +76,6 @@ gEngine.Core = (function () {
         mHeight: mHeight,
         mContext: mContext
     };
-
-    console.log("from Core");
     
     return mPublic;
 }());
