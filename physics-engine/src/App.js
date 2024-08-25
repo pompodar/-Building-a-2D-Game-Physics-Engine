@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import Vec2 from './Vec2';
 import Rectangle from './Rectangle';
 import Circle from './Circle';
 import CollisionInfo from './CollisionInfo';
 
 const App = () => {
-  let mGravity = new Vec2(0, 10);
-  let mMovement = true;
+  const GRAVITY = new Vec2(0, 10);
+  let movement = true;
 
-  var mPositionalCorrectionFlag = true;
- // number of relaxation iteration
- var mRelaxationCount = 15;
- // percentage of separation to project objects
- var mPosCorrectionRate = 0.8;
+  let positionalCorrectionFlag = true;
+  // number of relaxation iteration
+  let relaxationCount = 15;
+  // percentage of separation to project objects
+  let mPosCorrectionRate = 0.8;
 
   const canvasRef = useRef(null);
   const allObjectsRef = useRef([]);
   const gObjectNumRef = useRef(0);
-  const [mainContext, setMaincontext] = useState();
 
   const updateGameObjects = () => {
     const canvas = canvasRef.current;
@@ -26,8 +25,6 @@ const App = () => {
     const height = canvas.height;
 
     context.clearRect(0, 0, width, height);
-
-    setMaincontext(context);
 
     allObjectsRef.current.forEach(obj => {
       obj.update(canvas);
@@ -46,47 +43,46 @@ const App = () => {
       context.stroke();
     };
 
-    var positionalCorrection = function (s1, s2, collisionInfo) {
-      var s1InvMass = s1.mInvMass;
-      var s2InvMass = s2.mInvMass;
-      var num = collisionInfo.getDepth() /
-     (s1InvMass + s2InvMass) * mPosCorrectionRate;
-      var correctionAmount = collisionInfo.getNormal().scale(num);
+    const positionalCorrection = function (s1, s2, collisionInfo) {
+      const s1InvMass = s1.mInvMass;
+      const s2InvMass = s2.mInvMass;
+      const num = collisionInfo.getDepth() / (s1InvMass + s2InvMass) * mPosCorrectionRate;
+      const correctionAmount = collisionInfo.getNormal().scale(num);
       s1.move(correctionAmount.scale(-s1InvMass));
       s2.move(correctionAmount.scale(s2InvMass));
-     };
+    };
 
-     var resolveCollision = function (s1, s2, collisionInfo) {
-      if ((s1.mInvMass === 0) && (s2.mInvMass === 0))
-        return;
+    const resolveCollision = function (s1, s2, collisionInfo) {
+      if ((s1.mInvMass === 0) && (s2.mInvMass === 0)) return;
+        
         // correct positions
-        if (mPositionalCorrectionFlag)
+        if (positionalCorrectionFlag)
         positionalCorrection(s1, s2, collisionInfo);
-        var n = collisionInfo.getNormal();
-        var v1 = s1.mVelocity;
-        var v2 = s2.mVelocity;
-        var relativeVelocity = v2.subtract(v1);
+        const n = collisionInfo.getNormal();
+        const v1 = s1.mVelocity;
+        const v2 = s2.mVelocity;
+        const relativeVelocity = v2.subtract(v1);
         // Relative velocity in normal direction
-        var rVelocityInNormal = relativeVelocity.dot(n);
+        const rVelocityInNormal = relativeVelocity.dot(n);
         // if objects moving apart ignore
         if (rVelocityInNormal > 0)
         return;
         // compute and apply response impulses for each object
-        var newRestituion = Math.min(s1.mRestitution, s2.mRestitution);
-        var newFriction = Math.min(s1.mFriction, s2.mFriction);
+        const newRestituion = Math.min(s1.mRestitution, s2.mRestitution);
+        const newFriction = Math.min(s1.mFriction, s2.mFriction);
         // Calc impulse scalar
-        var jN = -(1 + newRestituion) * rVelocityInNormal;
+        let jN = -(1 + newRestituion) * rVelocityInNormal;
         jN = jN / (s1.mInvMass + s2.mInvMass);
         //impulse is in direction of normal ( from s1 to s2)
-        var impulse = n.scale(jN);
+        let impulse = n.scale(jN);
         // impulse = F dt = m * v
         // v = impulse / m
         s1.mVelocity = s1.mVelocity.subtract(impulse.scale(s1.mInvMass));
         s2.mVelocity = s2.mVelocity.add(impulse.scale(s2.mInvMass));
-        var tangent = relativeVelocity.subtract(n.scale(relativeVelocity.dot(n)));
+        let tangent = relativeVelocity.subtract(n.scale(relativeVelocity.dot(n)));
             // relativeVelocity.dot(tangent) should less than 0
         tangent = tangent.normalize().scale(-1);
-        var jT = -(1 + newRestituion) *
+        let jT = -(1 + newRestituion) *
         relativeVelocity.dot(tangent) * newFriction;
         jT = jT / (s1.mInvMass + s2.mInvMass);
         // friction should be less than force in normal direction
@@ -95,42 +91,27 @@ const App = () => {
         impulse = tangent.scale(jT);
         s1.mVelocity = s1.mVelocity.subtract(impulse.scale(s1.mInvMass));
         s2.mVelocity = s2.mVelocity.add(impulse.scale(s2.mInvMass));
-     };
+    };
 
-    for (let k = 0; k < mRelaxationCount; k++) {
-    for (let i = 0; i < allObjectsRef.current.length; i++) {
-      for (let j = i + 1; j < allObjectsRef.current.length; j++) {
-        // if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {  
-                  
-        //   context.strokeStyle = 'green';
-        //   allObjectsRef.current[i].draw(context);
-        //   allObjectsRef.current[j].draw(context);
-        // } else {
-        //   context.strokeStyle = 'blue';
-        // }
+    for (let k = 0; k < relaxationCount; k++) {
+      for (let i = 0; i < allObjectsRef.current.length; i++) {
+        for (let j = i + 1; j < allObjectsRef.current.length; j++) {
+          if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {  
+            if (allObjectsRef.current[i].collisionTest(allObjectsRef.current[j], collisionInfo)) {               
+              // Перевірка та зміна напряму нормалі
+              if (collisionInfo.getNormal().dot(allObjectsRef.current[j].mCenter.subtract(allObjectsRef.current[i].mCenter)) < 0) {
+                  collisionInfo.changeDir();
+              } 
+              // Малювання інформації про зіткнення
+              drawCollisionInfo(collisionInfo, context);
 
-        if (allObjectsRef.current[i].boundTest(allObjectsRef.current[j])) {  
-          if (allObjectsRef.current[i].collisionTest(allObjectsRef.current[j], collisionInfo)) {               
-            // Перевірка та зміна напряму нормалі
-            if (collisionInfo.getNormal().dot(allObjectsRef.current[j].mCenter.subtract(allObjectsRef.current[i].mCenter)) < 0) {
-                collisionInfo.changeDir();
-
+              resolveCollision(allObjectsRef.current[i],
+                allObjectsRef.current[j],
+                collisionInfo);
             }
-
-            
-            
-            // Малювання інформації про зіткнення
-            drawCollisionInfo(collisionInfo, context);
-
-            resolveCollision(allObjectsRef.current[i],
-              allObjectsRef.current[j],
-              collisionInfo);
           }
         }
-      }
-      }
-
-      
+      } 
     }
   };
 
@@ -140,7 +121,7 @@ const App = () => {
     canvas.height = 450;
 
     // Initial objects setup
-    let r1 = new Rectangle(new Vec2(200, 200), 40, 40, false);
+    let r1 = new Rectangle(new Vec2(200, 200), 40, 40);
     allObjectsRef.current = [r1];
 
     const runGameLoop = () => {
@@ -159,8 +140,8 @@ const App = () => {
       const randomX = Math.random() * width;
       const randomY = Math.random() * height;
 
-      //let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, false);
-      //allObjectsRef.current = [...allObjectsRef.current, r1];
+      let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40);
+      allObjectsRef.current = [...allObjectsRef.current, r1];
     }, 500);
 
     return () => {
@@ -177,9 +158,9 @@ const App = () => {
       let r1 = new Rectangle(
         new Vec2(allObjects[gObjectNum].mCenter.x + 200, allObjects[gObjectNum].mCenter.y + 20),
         Math.random() * 30 + 10,
-        Math.random() * 30 + 10
+        Math.random() * 30 + 10, 200, 200, 1
       );
-      var r5 = new Rectangle(new Vec2(500, 200), 400, 20, 0, 0.3, 0);
+      var r5 = new Rectangle(new Vec2(500, 200), 400, 20, 1, 1, 1);
     r5.rotate(2.8);
     var r6 = new Rectangle(new Vec2(200, 400), 400, 20, 20, 1, 0.5);
       allObjectsRef.current = [...allObjects, r1, r5, r6];
