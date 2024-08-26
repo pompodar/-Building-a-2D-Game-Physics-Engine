@@ -1,7 +1,7 @@
 import Vec2 from './Vec2';
 
 class RigidShape {
-  constructor(center, mass = 1, friction = 0.8, restitution = 0.2) {
+  constructor(center, mass = 1, friction = 0.8, restitution = 0.2, gravity = 1) {
     this.mCenter = center;
     const width = 40;
     const height = 40;
@@ -42,7 +42,7 @@ class RigidShape {
     this.mVelocity = new Vec2(0, 0);
     if (this.mInvMass !== 0) {
       this.mInvMass = 1 / this.mInvMass;
-      this.mAcceleration = new Vec2(0, 10);
+      this.mAcceleration = new Vec2(0, 10);      
     } else {
       this.mAcceleration = new Vec2(0, 0);
     }
@@ -55,17 +55,21 @@ class RigidShape {
     this.updateInertia();
   }
 
-  update(canvasDimensions) {
-    if (false) {
-      const dt = 200;
+  
+  update() {
+    // Time step should be calculated dynamically
+    const dt = 1 / 60; // Example for 60 FPS
+
+    if (this.mInvMass !== 0) {
       this.mVelocity = this.mVelocity.add(this.mAcceleration.scale(dt));
       this.move(this.mVelocity.scale(dt));
-      this.mAngularVelocity += this.mAngularAcceleration * dt;
-      this.rotate(this.mAngularVelocity * dt);
     }
+
+    this.mAngularVelocity += this.mAngularAcceleration * dt;
+    this.rotate(this.mAngularVelocity * dt);
   }
 
-  move(vec) {
+  move(vec) {    
     this.mCenter = this.mCenter.add(vec);
   }
 
@@ -99,7 +103,7 @@ class RigidShape {
     this.updateInertia();
   }
 
-  updateInertia() {
+  updateInertia() {    
     if (this.mInvMass === 0) {
       this.mInertia = 0;
     } else {

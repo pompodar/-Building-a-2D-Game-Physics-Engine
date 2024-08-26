@@ -15,7 +15,13 @@ const App = () => {
 
   const updateGameObjects = () => {
     allObjectsRef.current.forEach((obj) => {
+
+      if (obj.mass !== 1000) {
+        obj.move(new Vec2(0, 0.2)); //gravitation
+      }  
+        
       obj.update(); // Update the position and style of div elements
+
     });
 
     const collisionInfo = new CollisionInfo();
@@ -36,9 +42,12 @@ const App = () => {
     };
 
     const resolveCollision = (s1, s2, collisionInfo) => {
-      if (s1.mInvMass === 0 && s2.mInvMass === 0) return;
+      if (s1.mInvMass === 0 || s2.mInvMass === 0) return; // check if either of two objects don't have mass
 
+      console.log(s1.mInvMass, s2.mInvMass);
+      
       if (positionalCorrectionFlag) positionalCorrection(s1, s2, collisionInfo);
+      
       const n = collisionInfo.getNormal();
       const v1 = s1.mVelocity;
       const v2 = s2.mVelocity;
@@ -115,7 +124,7 @@ const App = () => {
     const container = containerRef.current;
     container.style.position = 'relative'; // Make sure container is positioned relatively
 
-    let r1 = new Rectangle(new Vec2(200, 200), 40, 40);
+    let r1 = new Rectangle(new Vec2(200, 200), 40, 40, 1, 1, 1, 1);
     allObjectsRef.current = [r1];
 
     const runGameLoop = () => {
@@ -142,7 +151,7 @@ const App = () => {
   }, []);
 
   return (
-    <div ref={containerRef} style={{ width: '800px', height: '450px', border: '1px solid black' }}>
+    <div ref={containerRef} style={{ width: '100vw', height: '100vh', border: '1px solid black' }}>
       <KeyHandler allObjectsRef={allObjectsRef} gObjectNumRef={gObjectNumRef} />
     </div>
   );

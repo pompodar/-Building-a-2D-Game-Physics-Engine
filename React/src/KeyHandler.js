@@ -16,13 +16,13 @@ const KeyHandler = ({ allObjectsRef, gObjectNumRef }) => {
         const r1 = new Rectangle(
           new Vec2(allObjects[gObjectNum].mCenter.x + 200, allObjects[gObjectNum].mCenter.y + 20),
           Math.random() * 30 + 10,
-          Math.random() * 30 + 10, 200, 200, 1
+          Math.random() * 30 + 10, 1000, 100, 1, 1
         );
 
-        const r5 = new Rectangle(new Vec2(500, 200), 400, 20, 1, 1, 1);
+        const r5 = new Rectangle(new Vec2(500, 200), 400, 20, 100, 1, 1);
         r5.rotate(2.8);
 
-        const r6 = new Rectangle(new Vec2(200, 400), 400, 20, 20, 1, 0.5);
+        const r6 = new Rectangle(new Vec2(200, 400), 490, 20, 1000, 1, 1, 0);
         allObjectsRef.current = [...allObjects, r1, r5, r6];
       }
 

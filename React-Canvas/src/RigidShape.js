@@ -55,8 +55,8 @@ class RigidShape {
     this.updateInertia();
   }
 
-  update(canvasDimensions) {
-    if (false) {
+  update() {
+    if (true) {
       const dt = 200;
       this.mVelocity = this.mVelocity.add(this.mAcceleration.scale(dt));
       this.move(this.mVelocity.scale(dt));

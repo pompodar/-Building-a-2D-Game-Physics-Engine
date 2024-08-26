@@ -5,7 +5,7 @@ function MyGame() {
     
     // SV - var up = new Rectangle(new Vec2(pisitionX, positionY), width, height, fix);
 
-    var r2 = new Rectangle(new Vec2(40, 40), 20, 20, 10, 1, 0);
+    var r2 = new Rectangle(new Vec2(40, 40), 20, 20, 0, 1, 0);
 
     var r3 = new Rectangle(new Vec2(80, 80), 20, 20, 1, 1, 0);
 
@@ -13,7 +13,7 @@ function MyGame() {
     r5.rotate(2.8);
     var r6 = new Rectangle(new Vec2(200, 400), 400, 20, 0, 1, 0.5);
     var r7 = new Rectangle(new Vec2(100, 200), 200, 20, 0);
-    var r8 = new Rectangle(new Vec2(10, 360), 20, 100, 0, 0, 1);
+    var r8 = new Rectangle(new Vec2(10, 360), 20, 100, 1000, 0, 1);
 
 
     // var up = new Rectangle(new Vec2(200, 200), 40, 40, false);

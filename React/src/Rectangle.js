@@ -3,8 +3,10 @@ import Vec2 from './Vec2';
 import CollisionInfo from './CollisionInfo';
 
 class Rectangle extends RigidShape {
-  constructor(center, width, height) {
-    super(center);
+  constructor(center, width, height, mass, friction, restitution, gravity) {
+    super(center, mass);
+    this.mass = mass;
+    this.gravity = gravity;
     this.mType = 'Rectangle';
     this.mWidth = width;
     this.mHeight = height;
@@ -21,6 +23,7 @@ class Rectangle extends RigidShape {
     this.div.style.position = 'absolute';
     this.div.style.width = `${width}px`;
     this.div.style.height = `${height}px`;
+    this.div.textContent = 'mass: ' + this.mass;
     this.div.style.backgroundColor = 'rgba(0, 0, 255, 0.5)'; // Semi-transparent blue
     this.div.style.border = '1px solid black';
     document.body.appendChild(this.div);
