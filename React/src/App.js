@@ -43,8 +43,6 @@ const App = () => {
 
     const resolveCollision = (s1, s2, collisionInfo) => {
       if (s1.mInvMass === 0 || s2.mInvMass === 0) return; // check if either of two objects don't have mass
-
-      console.log(s1.mInvMass, s2.mInvMass);
       
       if (positionalCorrectionFlag) positionalCorrection(s1, s2, collisionInfo);
       
