@@ -36,3 +36,10 @@
     transform: rotate(360deg);
   }
 }
+
+.rect-circle {
+  border-radius: 50%;
+  border: aqua 2px solid;
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  transition: all, 10s;
+}

@@ -19,11 +19,11 @@ const KeyHandler = ({ allObjectsRef, gObjectNumRef }) => {
           Math.random() * 30 + 10, 1000, 100, 1, 1
         );
 
-        const r5 = new Rectangle(new Vec2(500, 200), 400, 20, 100, 1, 1);
-        r5.rotate(2.8);
+        // const r5 = new Rectangle(new Vec2(500, 200), 400, 20, 100, 1, 1);
+        // r5.rotate(2.8);
 
-        const r6 = new Rectangle(new Vec2(200, 400), 490, 20, 1000, 1, 1, 0);
-        allObjectsRef.current = [...allObjects, r1, r5, r6];
+        const r6 = new Rectangle(new Vec2(200, 500), 1920, 20, 100000, 1, 1, 0);
+        allObjectsRef.current = [...allObjects, r1, r6];
       }
 
       if (keycode === 71) { // G

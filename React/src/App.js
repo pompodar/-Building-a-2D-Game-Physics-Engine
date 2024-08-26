@@ -3,6 +3,7 @@ import Vec2 from './Vec2';
 import Rectangle from './Rectangle';
 import CollisionInfo from './CollisionInfo';
 import KeyHandler from './KeyHandler';
+import './App.css'
 
 const App = () => {
   const containerRef = useRef(null); // Use this ref for appending div elements
@@ -16,7 +17,7 @@ const App = () => {
   const updateGameObjects = () => {
     allObjectsRef.current.forEach((obj) => {
 
-      if (obj.mass !== 1000) {
+      if (obj.mass < 1000) {
         obj.move(new Vec2(0, 0.2)); //gravitation
       }  
         
@@ -139,9 +140,9 @@ const App = () => {
       const randomX = Math.random() * width;
       const randomY = Math.random() * height;
 
-      //let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40);
-      //allObjectsRef.current = [...allObjectsRef.current, r1];
-    }, 5000);
+      let r1 = new Rectangle(new Vec2(randomX, randomY), 40, 40, 1);
+      allObjectsRef.current = [...allObjectsRef.current, r1];
+    }, 500);
 
     return () => {
       clearInterval(intervalId);

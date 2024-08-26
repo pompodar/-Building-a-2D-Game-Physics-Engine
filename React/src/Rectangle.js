@@ -21,11 +21,16 @@ class Rectangle extends RigidShape {
     // Create a div element to represent this rectangle
     this.div = document.createElement('div');
     this.div.style.position = 'absolute';
-    this.div.style.width = `${width}px`;
-    this.div.style.height = `${height}px`;
-    this.div.textContent = 'mass: ' + this.mass;
-    this.div.style.backgroundColor = 'rgba(0, 0, 255, 0.5)'; // Semi-transparent blue
-    this.div.style.border = '1px solid black';
+    this.div.style.width = 0;
+    this.div.style.height = 0;
+    setTimeout(() => {
+      this.div.style.width = `${width}px`;
+      this.div.style.height = `${height}px`;
+    }, 1000);
+    this.div.className = 'rect-circle';
+    // this.div.textContent = 'mass: ' + this.mass;
+    // this.div.style.backgroundColor = 'rgba(0, 0, 255, 0.5)'; // Semi-transparent blue
+    // this.div.style.border = '1px solid black';
     document.body.appendChild(this.div);
   }
 
