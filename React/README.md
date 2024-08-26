@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+1. In MyGame.js 
+   
+    we create an object:
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+    var up = new Rectangle(new Vec2(pisitionX, positionY), width, height, fix);
 
-## Available Scripts
+    var up = new Rectangle(new Vec2(200, 200), 40, 40, true);
 
-In the project directory, you can run:
+2. in Rectangle.js
 
-### `npm start`
+    we create a Rigid object:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    RigidShape.call(this, center);
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+3. In RigidShape.js
 
-### `npm test`
+    we push this object to and array of objects:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    gEngine.Core.mAllObjects.push(this);
 
-### `npm run build`
+4.In Core.js in runGameLoop function we have:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    requestAnimationFrame(function () {
+	   runGameLoop();
+     });
+     
+    which is like a setInterval which a) updates and b) draws: // TODO - clarify how the interval is being calculated
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+      a) in update function we update each object:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+          mAllObjects[i].update(mContext);
 
-### `npm run eject`
+       this function is in RapidShape.js:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+           RigidShape.prototype.update = function () {
+			if (this.mCenter.y < gEngine.Core.mHeight && this.mFix !== 0) // TODO - clarify this condition
+			    this.move(new Vec2(0, 1));
+		   };
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+        this function is in Rectangle.js:
+        
+        Rectangle.prototype.move = function (v) {
+			var i; 
+			for (i = 0; i < this.mVertex.length; i++) {
+			    this.mVertex[i] = this.mVertex[i].add(v);
+			}
+			
+			this.mCenter = this.mCenter.add(v);
+			return this;
+		  };
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+            and this one is in Vec2:
+			
+			Vec2.prototype.add = function (vec) {
+			    return new Vec2(vec.x + this.x, vec.y + this.y);
+			  };
+		b) function draw draws the canvas from scratch:
+		
+		   var draw = function () {
+			mContext.clearRect(0, 0, mWidth, mHeight);
+			var i; for (i = 0; i < mAllObjects.length; i++) {
+			mContext.strokeStyle = 'blue';
+			
+			if (i === gObjectNum)
+				mContext.strokeStyle = 'red';
+				mAllObjects[i].draw(mContext);
+			}
+		};
